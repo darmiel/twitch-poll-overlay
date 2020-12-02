@@ -16,10 +16,11 @@ jobs:
         run: |
           npm install --save-dev
           npx webpack
+          ls -larth
+          ls -larth dist/
 
-      - name: Publish generated content to GitHub Pages
-        uses: tsunematsu21/actions-publish-gh-pages@v1.0.1
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          dir: dist
-          branch: gh-pages
-          token: ${{ secrets.ACCESS_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
