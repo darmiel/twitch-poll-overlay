@@ -47,7 +47,17 @@ function replaceEmoticons(msg, emotes) {
 }
 
 // just some example channels (with decent chat activity) for now
-const channels = ["trymacs", "unsympathisch_tv"];
+const channels = [
+    "trymacs", 
+    "unsympathisch_tv", 
+    "INSCOPE21TV", 
+    "AnniTheDuck", 
+    "rewinside", 
+    "RevedRV", 
+    "kuhlewuLIVE", 
+    "ELoTRiX", 
+    "SizzleBrothers"
+];
 
 // create chat
 const client = new tmi.Client({
