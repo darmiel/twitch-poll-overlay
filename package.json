@@ -15,7 +15,9 @@
     "webpack-cli": "^4.2.0"
   },
   "dependencies": {
+    "dompurify": "^2.2.2",
     "lodash": "^4.17.20",
+    "purify": "^3.4.0",
     "tmi.js": "^1.5.0"
   }
 }
