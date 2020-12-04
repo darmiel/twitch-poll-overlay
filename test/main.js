@@ -1,3 +1,6 @@
+import color from './color';
+
+
 const displayHeight = document.defaultView.innerHeight;
 const displayWidth = document.defaultView.innerWidth;
 
@@ -71,7 +74,7 @@ for (let i = 0; i < values.length; i++) {
   ctx.closePath();
 
   // ! Koordinaten Text
-  const beta = (endAngle - 1.5*Math.PI) + currentAngle / 2;
+  const beta = endAngle - 1.5 * Math.PI + currentAngle / 2;
   const textX = (pieRadius + 20) * Math.sin(beta) + pieX;
   const textY = (pieRadius + 20) * Math.cos(beta) + pieY;
 
@@ -89,3 +92,13 @@ for (let i = 0; i < values.length; i++) {
 
   endAngle += currentAngle;
 }
+
+// Testing
+const tX = displayWidth / 4;
+const tY = displayHeight / 4;
+ctx.beginPath();
+ctx.moveTo(tX, tY);
+ctx.arc(tX, tY, pieRadius / 2, -.5*Math.PI, Math.PI-.5*Math.PI);
+ctx.fillStyle = colors[5 % colors.length];
+ctx.fill();
+ctx.closePath();
