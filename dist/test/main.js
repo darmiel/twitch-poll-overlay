@@ -1,8 +1,58 @@
-import color from './color';
+const rgb2hex = (r, g, b) => {
+  const rgb = ((r << 16) | (g << 8) | b) & 0xffffff;
+  console.log("r g b: ", r, g, b);
+  console.log("rgb: " + rgb);
+  return rgb.toString(16);
+};
 
+const hexToRgb = (hex) => {
+  if (hex.startsWith("#")) {
+    hex = hex.substring(1);
+  }
+
+  const rgb = parseInt(hex, 16);
+
+  return [
+    /* R */ (rgb >> 16) & 0xff,
+    /* G */ (rgb >> 8) & 0xff,
+    /* B */ rgb & 0xff,
+  ];
+};
+
+const RGB2ToYCbCr = (r, g, b) => {
+  return [
+    /* Y  */
+    16 + (65.738 * r) / 256 + (129.057 * g) / 256 + (25.064 * b) / 256,
+    /* Cb */
+    128 - (37.945 * r) / 256 - (74.494 * g) / 256 + (112.439 * b) / 256,
+    /* Cr */
+    128 + (112.439 * r) / 256 - (94.154 * g) / 256 - (18.285 * b) / 256,
+  ];
+};
+
+const YCbCr2RGB = (y, cb, cr) => {
+  const Y = y - 16;
+  const Cb = cb - 128;
+  const Cr = cr - 128;
+
+  return [
+    /* R */ Math.round(Y * 1.164 + 1.596 * Cr),
+    /* G */ Math.round(Y * 1.164 + Cb * -0.392 + Cr * -0.813),
+    /* B */ Math.round(Y * 1.164 + Cb * 2.017),
+  ];
+};
+
+const darkenColor = (r, g, b, mp) => {
+  r = Math.max(0, r * mp);
+  g = Math.max(0, g * mp);
+  b = Math.max(0, b * mp);
+  return rgb2hex(r, g, b);
+};
 
 const displayHeight = document.defaultView.innerHeight;
 const displayWidth = document.defaultView.innerWidth;
+
+const fontSize = 25;
 
 const canvas = document.getElementById("canvas");
 canvas.height = displayHeight;
@@ -26,28 +76,16 @@ const colors = [
   "#ecf0f1",
 ];
 
-const values = [
-  /*{
 
-    text: "",
-    value: 100,
-    base: true,
-  },*/
-  {
-    text: "Daniel",
+const values = [
+ {
     value: 25,
   },
   {
-    text: "Simon",
-    value: 15,
+    value: 50,
   },
   {
-    text: "Max",
-    value: 10,
-  },
-  {
-    text: "Max",
-    value: 16,
+    value: 25,
   },
 ];
 
@@ -55,12 +93,10 @@ const pieX = displayWidth / 2;
 const pieY = displayHeight / 2;
 const pieRadius = Math.min(displayHeight, displayWidth) / 4.5;
 
-let angle = Math.PI * 1.5;
-
-let endAngle = 1.5 * Math.PI;
+let endAngle = 0;
 
 for (let i = 0; i < values.length; i++) {
-  const { text, value } = values[i];
+  const { value } = values[i];
   const color = colors[i % colors.length]; // get a new color for each layer
 
   const currentAngle = (Math.PI / 50) * value;
@@ -68,37 +104,36 @@ for (let i = 0; i < values.length; i++) {
   // draw basic pie chart
   ctx.beginPath();
   ctx.moveTo(pieX, pieY);
-  ctx.arc(pieX, pieY, pieRadius, endAngle, endAngle + currentAngle);
+  ctx.arc(
+    pieX,
+    pieY,
+    pieRadius,
+    endAngle - 0.5 * Math.PI,
+    endAngle + currentAngle - 0.5 * Math.PI
+  );
   ctx.fillStyle = color;
   ctx.fill();
   ctx.closePath();
 
-  // ! Koordinaten Text
-  const beta = endAngle - 1.5 * Math.PI + currentAngle / 2;
-  const textX = (pieRadius + 20) * Math.sin(beta) + pieX;
-  const textY = (pieRadius + 20) * Math.cos(beta) + pieY;
+  const beta = endAngle + currentAngle / 2;
 
-  ctx.fillText(`${value}%`, textX, textY);
+  // format of text
+  const rgbColor = hexToRgb(color);
+  ctx.fillStyle = darkenColor(rgbColor[0], rgbColor[1], rgbColor[2], 0.65);
+  ctx.font = fontSize + "px courier";
 
-  console.log({
-    pieX,
-    pieY,
-    endAngle,
-    currentAngle,
-    beta,
-    textX,
-    textY,
-  });
+  const txt = `${value}%`;
+
+  // calculate text position
+  const t = txt.length * (15);
+  const h = 15;
+
+  const Abs = pieRadius - 50;
+  const Tx = pieX + (Math.sin(beta) * Abs + (t / 2) * (Math.sin(beta) - 1));
+  const Ty = pieY - (Math.cos(beta) * Abs + (h / 2) * (Math.cos(beta) - 1));
+
+  // draw text
+  ctx.fillText(txt, Tx, Ty);
 
   endAngle += currentAngle;
 }
-
-// Testing
-const tX = displayWidth / 4;
-const tY = displayHeight / 4;
-ctx.beginPath();
-ctx.moveTo(tX, tY);
-ctx.arc(tX, tY, pieRadius / 2, -.5*Math.PI, Math.PI-.5*Math.PI);
-ctx.fillStyle = colors[5 % colors.length];
-ctx.fill();
-ctx.closePath();
