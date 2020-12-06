@@ -1,63 +1,26 @@
-import { colors, darkenHexColor } from "./color";
-
-export class Bar {
-  //
-  private canvas: HTMLCanvasElement;
-  private ctx: CanvasRenderingContext2D;
-  //
-  public error: string;
-  //
+import { colors, darkenHexColor } from "../color";
+import { Chart } from "./chart";
+export class Bar extends Chart {
 
   constructor(
-    private canvasElementId: string,
+    elemId: string,
     private fontSize: number = -1,
     private background: string = "#2c3e50",
-    private height: number = -1,
-    private width: number = -1,
+    height: number = -1,
+    width: number = -1,
     private barMarginHeight: number = 100,
     private barMarginWidth: number = 100,
     private strokeMarginHeight: number = 5,
     private strokeMarginWidth: number = 5
   ) {
-    // if width == -1: width of display
-    if (this.width == -1) {
-      this.width = document.defaultView.innerWidth;
-    }
-    // if height == -1: height of display
-    if (this.height == -1) {
-      this.height = document.defaultView.innerHeight;
-    }
-
-    // find canvas
-    const canvas = document.getElementById(this.canvasElementId);
-    if (canvas == null) {
-      this.error = "Canvas not found.";
-      return;
-    }
-    this.canvas = <HTMLCanvasElement>canvas;
-
-    // get context
-    const ctx = this.canvas.getContext("2d");
-    console.log("ctx:", ctx);
-    if (ctx == null) {
-      this.error = "Context not found.";
-      return;
-    }
-    this.ctx = ctx;
-
-    // init canvas
-    this.init();
+    super(elemId, width, height);
   }
 
-  private init(): void {
+  public init(): void {
     if (this.error) {
       console.log("Skipped init because of an error");
       return;
     }
-
-    // make the canvas the size of width and height
-    this.canvas.height = this.height;
-    this.canvas.width = this.width;
 
     // background
     this.canvas.style.background = this.background;

@@ -18,7 +18,7 @@ export class Chat {
     this.client.connect();
     console.log("[Chat] Connected!");
 
-    // this.registerEvents();
+    this.registerEvents();
   }
 
   private registerEvents() {

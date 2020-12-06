@@ -5,8 +5,11 @@ import { Chat } from "./assets/ts/chat";
 import { ChatUserstate } from "tmi.js";
 const chat: Chat = new Chat("freiheitstream");
 
-import { Bar } from "./assets/ts/bar";
-const bar: Bar = new Bar("bar");
+import { Bar } from "./assets/ts/charts/bar";
+import { Chart } from "./assets/ts/charts/chart";
+import { Pie } from "./assets/ts/charts/pie";
+
+const bar: Chart = new Pie("bar"); // new Bar("bar");
 if (bar.error) {
   console.error(bar.error);
 } else {
@@ -23,7 +26,6 @@ chat.client.on(
     self: boolean
   ) => {
     num++;
-
     bar.draw([num, 100]);
   }
 );

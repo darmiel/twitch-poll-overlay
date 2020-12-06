@@ -1,4 +1,5 @@
-// colors for the bar
+// colors for the charts
+// taken from: https://flatuicolors.com/
 const colors: Array<string> = [
   "#3498db",
   "#f1c40f",
