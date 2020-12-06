@@ -7,14 +7,7 @@ module.exports = {
   entry: "./src/index.ts",
   devtool: "inline-source-map",
   module: {
-    rules: [/*
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        use: {
-          loader: "babel-loader",
-        },
-      },*/
+    rules: [
       {
         test: /\.html$/,
         use: [

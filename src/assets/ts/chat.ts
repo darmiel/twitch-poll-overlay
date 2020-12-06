@@ -1,13 +1,37 @@
-import { Actions, Client, ClientBase, Events } from "tmi.js";
+import { Actions, ChatUserstate, Client, ClientBase } from "tmi.js";
 
-const client: ClientBase & Actions = Client({
-    connection: {
+export class Chat {
+  public client: ClientBase & Actions;
+
+  constructor(private channel: string) {
+    // create client
+    this.client = Client({
+      connection: {
         secure: true,
         reconnect: true,
       },
-      channels: ["freiheitstream"]
-});
+      channels: [this.channel],
+    });
 
-console.log("Connecting ...");
-client.connect();
-console.log("Connected!");
+    // debug
+    console.log("[Chat] Connecting to channel #" + channel);
+    this.client.connect();
+    console.log("[Chat] Connected!");
+
+    // this.registerEvents();
+  }
+
+  private registerEvents() {
+    this.client.on(
+      "message",
+      (
+        channel: string,
+        userstate: ChatUserstate,
+        message: string,
+        self: boolean
+      ) => {
+        console.log(channel, message);
+      }
+    );
+  }
+}
