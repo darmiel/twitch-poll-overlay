@@ -48,15 +48,15 @@ function replaceEmoticons(msg, emotes) {
 
 // just some example channels (with decent chat activity) for now
 const channels = [
-    "trymacs", 
-    "unsympathisch_tv", 
-    "INSCOPE21TV", 
-    "AnniTheDuck", 
-    "rewinside", 
-    "RevedRV", 
-    "kuhlewuLIVE", 
-    "ELoTRiX", 
-    "SizzleBrothers"
+  "trymacs",
+  "unsympathisch_tv",
+  "INSCOPE21TV",
+  "AnniTheDuck",
+  "rewinside",
+  "RevedRV",
+  "kuhlewuLIVE",
+  "ELoTRiX",
+  "SizzleBrothers",
 ];
 
 // create chat
@@ -65,7 +65,7 @@ const client = new tmi.Client({
     secure: true,
     reconnect: true,
   },
-  channels: channels,
+  channels: [], // no channels by default,
 });
 
 console.log("> Connecting to TMI ...");
@@ -77,7 +77,24 @@ console.log("> Connected");
  */
 client.on("message", async (channel, tags, message, self) => {
   // add bubble
-  document.body.appendChild(createBubble(channel, tags, message));
+  document
+    .getElementById("chat")
+    .appendChild(createBubble(channel, tags, message));
+
   // scroll to bottom
   window.scrollTo(0, document.body.scrollHeight);
 });
+
+module.exports = {
+    switchChannelByName: function() {
+        console.log("Test123");
+    }
+}
+
+function switchChannelByName(channel) {
+  console.log("> Switching to channel #" + channel);
+  client.disconnect();
+  client.getChannels().splice(0, client.getChannels().length);
+  client.getChannels().push(channel);
+  client.connect();
+}

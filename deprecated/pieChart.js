@@ -1,23 +1,4 @@
-const rgb2hex = (r, g, b) => {
-  const rgb = ((r << 16) | (g << 8) | b) & 0xffffff;
-  console.log("r g b: ", r, g, b);
-  console.log("rgb: " + rgb);
-  return rgb.toString(16);
-};
 
-const hexToRgb = (hex) => {
-  if (hex.startsWith("#")) {
-    hex = hex.substring(1);
-  }
-
-  const rgb = parseInt(hex, 16);
-
-  return [
-    /* R */ (rgb >> 16) & 0xff,
-    /* G */ (rgb >> 8) & 0xff,
-    /* B */ rgb & 0xff,
-  ];
-};
 
 const RGB2ToYCbCr = (r, g, b) => {
   return [
