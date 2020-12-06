@@ -1,4 +1,5 @@
 /dist/
+*~
 
 # Created by https://www.toptal.com/developers/gitignore/api/vscode,visualstudiocode,node
 # Edit at https://www.toptal.com/developers/gitignore?templates=vscode,visualstudiocode,node
