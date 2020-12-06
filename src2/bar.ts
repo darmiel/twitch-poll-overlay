@@ -1,10 +1,10 @@
 /* Settings */
 const barMarginHeight = 100;
-const barMarginWidth = 50;
+const barMarginWidth = 100;
 const strokeMarginHeight = 5;
 const strokeMarginWidth = 5;
 
-interface Color {
+export interface Color {
   value: number;
 }
 
@@ -23,7 +23,7 @@ const colors: Array<string> = [
   "#ecf0f1",
 ];
 
-interface Reaction {
+export interface Reaction {
   color: Color;
   order: number; // -oo <- left | +oo <- right
   words: string[];
@@ -109,7 +109,7 @@ function init(): boolean {
   return true;
 }
 
-function drawBar(values: Array<number>) {
+export function drawBar(values: Array<number>) {
   // clear rect
   ctx.clearRect(0, 0, width, height);
 
@@ -175,7 +175,7 @@ if (init()) {
         drawBar([val1, val2]);
         val1 += 10;
 
-        if (val1 > val2*10) {
+        if (val1 > val2*2) {
             clearInterval(iv);
         }
     }, 100);

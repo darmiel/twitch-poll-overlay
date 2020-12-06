@@ -2,6 +2,8 @@
 import tmi from "tmi.js";
 import DOMPurify from "dompurify";
 
+const params = new URLSearchParams(window.location.search);
+
 function createBubble(channel, tags, message) {
   const element = document.createElement("div");
   let clean = DOMPurify.sanitize(message);

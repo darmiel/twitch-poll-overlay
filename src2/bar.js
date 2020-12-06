@@ -1,7 +1,6 @@
-"use strict";
 /* Settings */
 var barMarginHeight = 100;
-var barMarginWidth = 50;
+var barMarginWidth = 100;
 var strokeMarginHeight = 5;
 var strokeMarginWidth = 5;
 // colors for the bar
@@ -113,13 +112,14 @@ function drawBar(values) {
         console.log({ v: v, percentage: percentage, valueWidth: valueWidth });
     }
 }
+exports.drawBar = drawBar;
 if (init()) {
     var val1_1 = 10;
     var val2_1 = 1000;
     var iv_1 = setInterval(function () {
         drawBar([val1_1, val2_1]);
         val1_1 += 10;
-        if (val1_1 > val2_1 * 10) {
+        if (val1_1 > val2_1 * 2) {
             clearInterval(iv_1);
         }
     }, 100);
