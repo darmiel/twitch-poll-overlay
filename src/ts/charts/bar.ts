@@ -4,10 +4,10 @@ export class Bar extends Chart {
 
   constructor(
     elemId: string,
-    private fontSize: number = -1,
-    private background: string = "#2c3e50",
     height: number = -1,
     width: number = -1,
+    private fontSize: number = -1,
+    private background: string = "#2c3e50",
     private barMarginHeight: number = 100,
     private barMarginWidth: number = 100,
     private strokeMarginHeight: number = 5,
