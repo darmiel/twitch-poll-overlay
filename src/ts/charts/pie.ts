@@ -1,30 +1,75 @@
-import { Chart } from "./chart";
+import { Chart, ChartProperties } from "./chart";
 import { colors, darkenHexColor } from "../color";
 
-export class Pie extends Chart {
-  public r: number;
+const LOCATION_CENTER: number = -1;
 
+export { LOCATION_CENTER };
+
+////////////////////////////////////////////////////////////////////////
+
+interface PieProperties extends ChartProperties {
+  /**
+   * 
+   * The font size of the font that serves as a percentage display above the chart.
+   * Use FONT_DYNAMIC to have the font size calculated according to the total size of the chart (dynamic)
+   * @default 25
+   */
+  fontSize?: number;
+
+  /**
+   * Round the value?
+   */
+  round?: boolean;
+
+  /**
+   * (height or width) / {radiusFactor}
+   */
+  radiusFactor?: number;
+
+  /**
+   * The font family for the values
+   * @default calibri
+   */
+  fontFamily?: string;
+
+  /**
+   * How much the text color should be darkened
+   * @default .65
+   */
+  fontColorFactor?: number;
+}
+
+const defaultPieParams: PieProperties = {
+  elementId: "",
+  fontSize: 25,
+  round: true,
+  radiusFactor: 4.5,
+  fontFamily: "courier",
+  fontColorFactor: 0.65,
+};
+
+////////////////////////////////////////////////////////////////////////
+
+export class Pie extends Chart {
+  /**
+   * Radius of pie
+   */
+  public r: number;
   private endAngle: number;
 
-  constructor(
-    elemId: string,
-    width: number = -1,
-    height: number = -1,
-    public pieX: number = -1,
-    public pieY: number = -1,
-    private fontSize: number = 25,
-    private round: boolean = true
-  ) {
-    super(elemId, width, height);
+  constructor(public properties: PieProperties) {
+    super(properties);
 
-    if (this.pieX == -1) {
-      this.pieX = this.width / 2;
+    this.properties = { ...defaultPieParams, ...this.properties };
+
+    if (this.x === LOCATION_CENTER) {
+      this.x = this.width / 2;
     }
-    if (this.pieY == -1) {
-      this.pieY = this.height / 2;
+    if (this.y === LOCATION_CENTER) {
+      this.y = this.height / 2;
     }
 
-    this.r = Math.min(this.height, this.width) / 4.5;
+    this.r = Math.min(this.height, this.width) / this.properties.radiusFactor;
   }
 
   public init(): void {}
@@ -38,6 +83,9 @@ export class Pie extends Chart {
     if (clear) {
       this.ctx.clearRect(0, 0, this.width, this.height);
     }
+
+    // Alias to properties
+    const prop = this.properties;
 
     const sum = values.reduce((a, c) => a + c);
 
@@ -54,10 +102,10 @@ export class Pie extends Chart {
 
       // draw basic pie chart
       this.ctx.beginPath();
-      this.ctx.moveTo(this.pieX, this.pieY);
+      this.ctx.moveTo(this.x, this.y);
       this.ctx.arc(
-        this.pieX,
-        this.pieY,
+        this.x,
+        this.y,
         this.r,
         this.endAngle - 0.5 * Math.PI,
         this.endAngle + currentAngle - 0.5 * Math.PI
@@ -70,11 +118,19 @@ export class Pie extends Chart {
 
       // format of text
       if (drawText) {
-        console.log("> Drawing text!");
-        this.ctx.fillStyle = darkenHexColor(this.ctx.fillStyle, 0.65);
-        this.ctx.font = this.fontSize + "px courier";
+        this.ctx.fillStyle = darkenHexColor(
+          this.ctx.fillStyle,
+          prop.fontColorFactor
+        );
 
-        const txt = `${this.round ? Math.round(value) : value}%`;
+        this.ctx.font = prop.fontSize + "px " + prop.fontFamily;
+
+        let txt: string;
+        if (prop.round) {
+          txt = `${Math.round(value)}%`;
+        } else {
+          txt = `${value}$`;
+        }
 
         // calculate text position
         const t = txt.length * 15;
@@ -82,9 +138,9 @@ export class Pie extends Chart {
 
         const Abs = this.r - 50;
         const Tx =
-          this.pieX + (Math.sin(beta) * Abs + (t / 2) * (Math.sin(beta) - 1));
+          this.x + (Math.sin(beta) * Abs + (t / 2) * (Math.sin(beta) - 1));
         const Ty =
-          this.pieY - (Math.cos(beta) * Abs + (h / 2) * (Math.cos(beta) - 1));
+          this.y - (Math.cos(beta) * Abs + (h / 2) * (Math.cos(beta) - 1));
 
         // draw text
         this.ctx.fillText(txt, Tx, Ty);

@@ -10,8 +10,8 @@ import { Chart } from "./ts/charts/chart";
 import { Pie } from "./ts/charts/pie";
 
 const charts: Array<Chart> = [
-  new Bar("bar"), 
-  new Pie("pie")
+  new Bar({elementId: "bar"}), 
+  // new Pie({elementId: "pie"})
 ];
 
 for (let i: number = 0; i < charts.length; i++) {
@@ -34,7 +34,7 @@ chat.client.on(
     self: boolean
   ) => {
     num++;
-    const values = [num, 100, 50];
+    const values = [num, 100, 10];
 
     for (let i: number = 0; i < charts.length; i++) {
       const chart: Chart = charts[i];
