@@ -1,27 +1,28 @@
 import { Actions, ChatUserstate, Client, ClientBase } from "tmi.js";
+import { getReactionByKeyword, Reaction } from "./keywords";
 
 export class Chat {
   public client: ClientBase & Actions;
+  public reactionValues: Map<string, Map<Reaction, number>>;
 
-  constructor(private channel: string) {
+  constructor(private channels: string[]) {
+    this.reactionValues = new Map();
+
     // create client
     this.client = Client({
       connection: {
         secure: true,
         reconnect: true,
       },
-      channels: [this.channel],
+      channels: this.channels,
     });
 
     // debug
-    console.log("[Chat] Connecting to channel #" + channel);
+    console.log("[Chat] Connecting to channels: " + channels);
     this.client.connect();
     console.log("[Chat] Connected!");
 
-    this.registerEvents();
-  }
-
-  private registerEvents() {
+    // events
     this.client.on(
       "message",
       (
@@ -29,9 +30,76 @@ export class Chat {
         userstate: ChatUserstate,
         message: string,
         self: boolean
-      ) => {
-        console.log(channel, message);
-      }
+      ) => this.onMessage(channel, message)
     );
+  }
+
+  /**
+   * This method is executed when the Twitch IRC chat receives a message
+   * 
+   * @param channel The channel in which the message was sent
+   * @param message The message that was sent
+   */
+  private onMessage(channel: string, message: string) {
+    if (message == "!reset") {
+      this.resetValues();
+      return;
+    }
+
+    const reaction: Reaction = getReactionByKeyword(message);
+    if (reaction == null) {
+      return;
+    }
+
+    // increment counter
+    console.log(channel, reaction);
+    const val: number = this.increment(channel, reaction);
+
+    // reaction was found
+    console.log("  -> Reaction found:", reaction, val);
+  }
+
+  /**
+   * Resets all stored reaction values
+   * 
+   * @param channel The channel in which the value is to be reset. 
+   * Can be an array, a string, or remain empty. 
+   * If the parameter is left empty, the values of each channel are reset.
+   */
+  public resetValues(channel?: string | string[]): void {
+    if (channel == null) {
+      this.channels.forEach(val => this.resetValues(val));
+    } else if (channel instanceof Array) {
+      for (let i: number = 0; i < channel.length; i++) {
+        this.resetValues(channel[i]);
+      }
+    } else {
+      console.log("Clearing channel:", channel);
+      if (this.reactionValues.has(channel)) {
+        this.reactionValues.get(channel).clear();
+      }
+    }
+  }
+
+  /**
+   * Count up the reaction value in the specified channel by 1
+   * 
+   * @param channel The channel in which the reaction should be increased
+   * @param reaction The reaction to be counted up
+   */
+  public increment(channel: string, reaction: Reaction): number {
+    if (!this.reactionValues.has(channel)) {
+      this.reactionValues.set(channel, new Map());
+    }
+    const values = this.reactionValues.get(channel);
+
+    let value: number = values.has(reaction) ? values.get(reaction) : 0;
+
+    // increment value
+    value++;
+
+    values.set(reaction, value);
+
+    return value;
   }
 }
