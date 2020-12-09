@@ -5,11 +5,11 @@ import { getReactionByKeyword, Reaction } from "./keywords";
 import { EventEmitter } from "events";
 export class Chat {
   public client: ClientBase & Actions;
-  public reactionValues: Map<string, Map<Reaction, number>>;
-  
+  public reactionValues: Map<Reaction, number>;
+
   private ee: EventEmitter = new EventEmitter();
 
-  constructor(private channels: string[], private job: Job) {
+  constructor(private channel: string, private job: Job) {
     this.reactionValues = new Map();
 
     // create client
@@ -18,34 +18,30 @@ export class Chat {
         secure: true,
         reconnect: true,
       },
-      channels: this.channels,
+      channels: [this.channel],
     });
 
     // debug
-    console.log("[Chat] Connecting to channels: " + channels);
+    console.log("[Chat] Connecting to channel: " + channel);
     this.client.connect();
     console.log("[Chat] Connected!");
 
     // events
     this.client.on(
       "message",
-      (
-        channel: string,
-        userstate: ChatUserstate,
-        message: string,
-        self: boolean
-      ) => this.onMessage(channel, message)
+      (c: string, u: ChatUserstate, message: string, s: boolean) =>
+        this.onMessage(message)
     );
   }
-  
+
   /**
    * This method is executed when the Twitch IRC chat receives a message
    *
    * @param channel The channel in which the message was sent
    * @param message The message that was sent
    */
-  private onMessage(channel: string, message: string) {
-    this.ee.emit("message", channel, message);
+  private onMessage(message: string) {
+    this.ee.emit("message", message);
 
     if (message == "!reset") {
       this.resetValues();
@@ -58,14 +54,14 @@ export class Chat {
     }
 
     // increment counter
-    console.log(channel, reaction);
-    const val: number = this.increment(channel, reaction);
+    console.log(reaction);
+    const val: number = this.increment(reaction);
 
     // reaction was found
     console.log("  -> Reaction found:", reaction, val);
 
     // emit
-    this.ee.emit("reaction", channel, reaction, val);
+    this.ee.emit("reaction", reaction, val);
     this.job.ping();
   }
 
@@ -76,20 +72,9 @@ export class Chat {
    * Can be an array, a string, or remain empty.
    * If the parameter is left empty, the values of each channel are reset.
    */
-  public resetValues(channel?: string | string[]): void {
-    if (channel == null) {
-      this.channels.forEach((val) => this.resetValues(val));
-    } else if (channel instanceof Array) {
-      for (let i: number = 0; i < channel.length; i++) {
-        this.resetValues(channel[i]);
-      }
-    } else {
-      console.log("Clearing channel:", channel);
-      if (this.reactionValues.has(channel)) {
-        this.reactionValues.get(channel).clear();
-        this.ee.emit("reset", channel);
-      }
-    }
+  public resetValues(): void {
+    this.reactionValues.clear();
+    this.ee.emit("reset");
   }
 
   /**
@@ -98,25 +83,61 @@ export class Chat {
    * @param channel The channel in which the reaction should be increased
    * @param reaction The reaction to be counted up
    */
-  public increment(channel: string, reaction: Reaction): number {
-    if (!this.reactionValues.has(channel)) {
-      this.reactionValues.set(channel, new Map());
-    }
-    const values = this.reactionValues.get(channel);
-
-    let value: number = values.has(reaction) ? values.get(reaction) : 0;
+  public increment(reaction: Reaction): number {
+    let value: number = this.reactionValues.has(reaction)
+      ? this.reactionValues.get(reaction)
+      : 0;
 
     // increment value
     value++;
 
-    values.set(reaction, value);
+    this.reactionValues.set(reaction, value);
     this.ee.emit("increment", reaction, value);
 
     return value;
   }
 
+  public getValues(): number[] {
+    const keys: number[] = [];
+    const map: Map<number, number> = new Map();
+
+    this.reactionValues.forEach((value: number, reaction: Reaction) => {
+      map.set(reaction.sorting, value);
+      keys.push(reaction.sorting);
+    });
+    
+    // ToDo: Rework my shitty sorting
+    // or even better: rework this whole method
+    for (let i = 0; i < keys.length; i++) {
+      for (let j = 0; j < keys.length; j++) {
+        if (i == j) {
+          continue;
+        }
+
+        const a = keys[i];
+        const b = keys[j];
+
+        if (a < b) {
+          keys[i] = b;
+          keys[j] = a;
+        }
+      }
+    }
+
+    const res: number[] = [];
+    for (let i = 0; i < keys.length; i++) {
+      res.push(map.get(keys[i]));
+    }
+    return res;
+  }
+
+  /**
+   * Alias to {EventEmitter#on}
+   *
+   * @param event Event to listen for
+   * @param listener Listener
+   */
   public on(event: string | symbol, listener: (...args: any[]) => void): void {
     this.ee.on(event, listener);
   }
-
 }

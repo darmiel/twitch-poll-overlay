@@ -124,7 +124,7 @@ export class Bar extends Chart {
   ): void {
     // draw
     if (clear) {
-      this.ctx.clearRect(this.x, this.y, this.width, this.height);
+      this.clear();
     }
 
     const prop = this.properties;
@@ -208,5 +208,9 @@ export class Bar extends Chart {
 
       lastX += valueWidth;
     }
+  }
+
+  public clear(): void {
+    this.ctx.clearRect(this.x, this.y, this.width, this.height);
   }
 }

@@ -81,7 +81,7 @@ export class Pie extends Chart {
   ): void {
     // draw
     if (clear) {
-      this.ctx.clearRect(0, 0, this.width, this.height);
+      this.clear();
     }
 
     // Alias to properties
@@ -149,4 +149,9 @@ export class Pie extends Chart {
       this.endAngle += currentAngle;
     }
   }
+  
+  public clear(): void {
+    this.ctx.clearRect(0, 0, this.width, this.height);
+  }
+
 }

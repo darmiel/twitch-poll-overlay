@@ -42,7 +42,7 @@ export abstract class Chart {
       this.height = document.defaultView.innerHeight;
     } else if (this.x === LOCATION_CENTER) {
       this.y = document.defaultView.innerHeight / 2 - this.height / 2;
-    }  
+    }
 
     // find canvas
     const canvas = document.getElementById(this.canvasElementId);
@@ -66,7 +66,9 @@ export abstract class Chart {
     this.canvas.width = this.width;
 
     // background
-    this.canvas.style.background = properties.background ?? "#2c3e50";
+    if ((properties.background ?? "#2c3e50") != "none") {
+      this.canvas.style.background = properties.background ?? "#2c3e50";
+    }
 
     if (!this.error) {
       this.init();
@@ -75,4 +77,5 @@ export abstract class Chart {
 
   abstract init(): void;
   abstract draw(values: number[], drawText?: boolean, clear?: boolean): void;
+  abstract clear(): void;
 }
