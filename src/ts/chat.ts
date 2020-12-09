@@ -62,7 +62,6 @@ export class Chat {
 
     // emit
     this.ee.emit("reaction", reaction, val);
-    this.job.ping();
   }
 
   /**

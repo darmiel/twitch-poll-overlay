@@ -17,6 +17,8 @@ let drawing: boolean = false;
 
 // ping reaction
 chat.on("reaction", (channel: string, reaction: Reaction, value: number) => {
+  console.log("reaction");
+  
   job.ping();
 
   if (drawing) {
@@ -44,8 +46,9 @@ job.on("start", () => {
 
 job.on("cancel", () => {
   drawing = false;
+
   console.log("Job canceled!");
-  
+
   // clear bar
   bar.clear();
 

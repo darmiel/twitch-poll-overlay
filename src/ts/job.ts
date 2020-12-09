@@ -22,7 +22,10 @@ export class Job {
   }
 
   public ping(): void {
-    if (++this.currentPing < this.requiredPings) {
+    this.currentPing ++;
+    console.log("Current:", this.currentPing);
+
+    if (this.currentPing < this.requiredPings) {
       return;
     }
 
@@ -40,6 +43,10 @@ export class Job {
       window.clearInterval(this.timer);
       this.timer = null;
     }
+
+    // reset values
+    this.current = 0;
+    this.currentPing = 0;
   }
 
   public on(event: string | symbol, listener: (...args: any[]) => void): void {
