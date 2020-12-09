@@ -44,9 +44,13 @@ job.on("start", () => {
 
 job.on("cancel", () => {
   drawing = false;
-
   console.log("Job canceled!");
+  
+  // clear bar
   bar.clear();
+
+  // reset values
+  chat.resetValues();
 });
 
 function redrawBar(): void {
