@@ -27,6 +27,7 @@ function buildChartFromParams(): Chart {
       background: "none",
       x: -1,
       y: -1,
+      radiusFactor: 2
     });
   } else {
     return new Bar({

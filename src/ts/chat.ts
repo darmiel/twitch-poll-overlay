@@ -1,6 +1,6 @@
 import { Actions, ChatUserstate, Client, ClientBase } from "tmi.js";
 import { Job } from "./job";
-import { getReactionByKeyword, Reaction } from "./keywords";
+import { getReactionByKeyword, Reaction, reactions } from "./keywords";
 
 import { EventEmitter } from "events";
 export class Chat {
@@ -100,7 +100,11 @@ export class Chat {
     const keys: number[] = [];
     const map: Map<number, number> = new Map();
 
-    this.reactionValues.forEach((value: number, reaction: Reaction) => {
+    reactions.forEach((reaction: Reaction) => {
+      const value = this.reactionValues.has(reaction) 
+        ? this.reactionValues.get(reaction) 
+        : 0;
+        
       map.set(reaction.sorting, value);
       keys.push(reaction.sorting);
     });
