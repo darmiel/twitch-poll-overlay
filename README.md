@@ -8,3 +8,9 @@ Also, it might be useful later to evaluate these on-the-spot polls.
 ## Demo
 An super duper early early early demo is available at:  
 [https://darmiel.github.io/twitch-poll-overlay/index.html](https://darmiel.github.io/twitch-poll-overlay/index.html)
+
+### Bar
+![demo-bar](assets/demo-bar.gif)
+
+### Pie
+![demo-pie](assets/demo-pie.gif)
