@@ -69,6 +69,8 @@ export class Pie extends Chart {
       this.y = this.height / 2;
     }
 
+    console.log(this.x, this.y);
+
     this.r = Math.min(this.height, this.width) / this.properties.radiusFactor;
   }
 
