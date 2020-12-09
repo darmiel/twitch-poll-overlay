@@ -24,7 +24,15 @@ chat.on("reaction", (channel: string, reaction: Reaction, value: number) => {
   }
 });
 
-const bar: Bar = new Bar({ elementId: "bar", height: 50, background: "none" });
+const bar: Bar = new Bar({
+  elementId: "bar",
+  // height: 50,
+  background: "none",
+  barMarginHeight: 0,
+  barMarginWidth: 0,
+  strokeMarginHeight: 0,
+  strokeMarginWidth: 0,
+});
 
 // TODO: Show bar
 job.on("start", () => {
