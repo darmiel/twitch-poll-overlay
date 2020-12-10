@@ -97,6 +97,10 @@ export class Pie extends Chart {
     // draw pie
     for (let i: number = 0; i < values.length; i++) {
       const value: number = (values[i] / sum) * 100;
+      if (value == 0) {
+        continue;
+      }
+      
       const color: string = colors[i % colors.length];
 
       const currentAngle = (Math.PI / 50) * value;

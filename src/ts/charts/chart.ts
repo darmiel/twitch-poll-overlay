@@ -9,7 +9,6 @@ export interface ChartProperties {
   height?: number;
   background?: string;
 }
-
 export abstract class Chart {
   //
   public canvasElementId: string;

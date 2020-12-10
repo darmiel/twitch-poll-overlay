@@ -2,20 +2,20 @@
 import "./assets/styles/main.scss";
 
 import { Job } from "./ts/job";
-import { Chat } from "./ts/chat";
 import { Reaction } from "./ts/keywords";
-import { Bar } from "./ts/charts/bar";
-import { Pie } from "./ts/charts/pie";
 import { Chart } from "./ts/charts/chart";
+import { Chat } from "./ts/chats/chat";
+import { TwitchChat } from "./ts/chats/twitch.chat";
+import { ReactionStorage } from "./ts/reactionstorage";
+import { Pie } from "./ts/charts/pie";
+import { Bar } from "./ts/charts/bar";
 
 // get channel from url
 const params: URLSearchParams = new URLSearchParams(window.location.search);
-const channel: string = params.has("channel") ? params.get("channel") : "";
+const channel: string = params.get("channel") ?? "";
 
 const job: Job = new Job(10, 5);
-const chat: Chat = new Chat(channel, job);
-
-let drawing: boolean = false;
+const chat: Chat = new TwitchChat(channel);
 
 function buildChartFromParams(): Chart {
   const type = params.has("type") ? params.get("type") : null; // null = bar
@@ -27,7 +27,7 @@ function buildChartFromParams(): Chart {
       background: "none",
       x: -1,
       y: -1,
-      radiusFactor: 2
+      radiusFactor: 2,
     });
   } else {
     return new Bar({
@@ -44,38 +44,30 @@ function buildChartFromParams(): Chart {
 
 const chart: Chart = buildChartFromParams();
 
-// ping reaction
-chat.on("reaction", (channel: string, reaction: Reaction, value: number) => {
-  console.log("reaction");
+const storage: ReactionStorage = new ReactionStorage(chat, job);
 
-  job.ping();
+// ReactionStorage#on(reaction)
+// This event is executed when a new reaction is detected.
+// In this event the chart should be (re)painted with the values from:
+// ReactionStorage#getValues()
+storage.on("reaction", (username: string, reaction: Reaction) => {
+  console.log("on: reaction =", username, reaction, job.isActive());
 
-  if (drawing) {
-    redrawChart();
+  if (job.isActive()) {
+    storage.drawChart(chart);
   }
 });
 
 job.on("start", () => {
-  drawing = true;
-
   console.log("Job started!");
-  redrawChart();
 });
 
 job.on("cancel", () => {
-  drawing = false;
-
   console.log("Job canceled!");
 
   // clear bar
   chart.clear();
 
   // reset values
-  chat.resetValues();
+  storage.resetStorage();
 });
-
-function redrawChart(): void {
-  // get values
-  const values: number[] = chat.getValues();
-  chart.draw(values, true, true);
-}

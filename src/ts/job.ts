@@ -1,28 +1,28 @@
 import { EventEmitter } from "events";
 
-export class Job {
+export class Job extends EventEmitter {
   private timer: number | null;
 
   private current: number = 0;
   private currentPing: number = 0;
 
-  public ee: EventEmitter = new EventEmitter();
-
   constructor(
     public timeout: number = 10, // in s
     public requiredPings = 1
-  ) {}
+  ) {
+    super();
+  }
 
   public time(): void {
     this.current++;
     if (this.current >= this.timeout) {
       this.stopTimer();
-      this.ee.emit("cancel");
+      this.emit("cancel");
     }
   }
 
   public ping(): void {
-    this.currentPing ++;
+    this.currentPing++;
     console.log("Current:", this.currentPing);
 
     if (this.currentPing < this.requiredPings) {
@@ -34,12 +34,12 @@ export class Job {
 
     if (this.timer == null) {
       this.timer = window.setInterval(() => this.time(), 1000);
-      this.ee.emit("start");
+      this.emit("start");
     }
   }
 
   public stopTimer(): void {
-    if (this.timer != null) {
+    if (this.isActive()) {
       window.clearInterval(this.timer);
       this.timer = null;
     }
@@ -49,7 +49,7 @@ export class Job {
     this.currentPing = 0;
   }
 
-  public on(event: string | symbol, listener: (...args: any[]) => void): void {
-    this.ee.on(event, listener);
+  public isActive(): boolean {
+    return this.timer != null;
   }
 }

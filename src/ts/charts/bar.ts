@@ -171,6 +171,10 @@ export class Bar extends Chart {
       const v: number = values[i];
       const percentage: number = v / sum;
 
+      if (percentage == 0) {
+        continue;
+      }
+
       const valueWidth: number = rectWidth * percentage;
 
       this.ctx.fillStyle = prop.valueColors[i % prop.valueColors.length];
