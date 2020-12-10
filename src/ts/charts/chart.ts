@@ -53,7 +53,6 @@ export abstract class Chart {
 
     // get context
     const ctx = this.canvas.getContext("2d");
-    console.log("ctx:", ctx);
     if (ctx == null) {
       this.error = "Context not found.";
       return;

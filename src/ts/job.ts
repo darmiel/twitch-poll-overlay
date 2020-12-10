@@ -13,7 +13,7 @@ export class Job extends EventEmitter {
     super();
   }
 
-  public time(): void {
+  private onTime(): void {
     this.current++;
     if (this.current >= this.timeout) {
       this.stopTimer();
@@ -23,8 +23,6 @@ export class Job extends EventEmitter {
 
   public ping(): void {
     this.currentPing++;
-    console.log("Current:", this.currentPing);
-
     if (this.currentPing < this.requiredPings) {
       return;
     }
@@ -33,7 +31,7 @@ export class Job extends EventEmitter {
     this.currentPing = 0;
 
     if (this.timer == null) {
-      this.timer = window.setInterval(() => this.time(), 1000);
+      this.timer = window.setInterval(() => this.onTime(), 1000);
       this.emit("start");
     }
   }

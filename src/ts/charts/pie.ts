@@ -69,8 +69,6 @@ export class Pie extends Chart {
       this.y = this.height / 2;
     }
 
-    console.log(this.x, this.y);
-
     this.r = Math.min(this.height, this.width) / this.properties.radiusFactor;
   }
 
@@ -100,11 +98,10 @@ export class Pie extends Chart {
       if (value == 0) {
         continue;
       }
-      
+
       const color: string = colors[i % colors.length];
 
       const currentAngle = (Math.PI / 50) * value;
-      console.log({ value, color, currentAngle, drawText });
 
       // draw basic pie chart
       this.ctx.beginPath();

@@ -153,13 +153,6 @@ export class Bar extends Chart {
       );
       this.ctx.stroke();
       this.ctx.closePath();
-
-      console.log(
-        this.x + prop.barMarginWidth - prop.strokeMarginWidth - j,
-        this.y + prop.barMarginHeight - prop.strokeMarginHeight - j,
-        rectWidth + prop.strokeMarginWidth * 2 + j,
-        rectHeight + prop.strokeMarginHeight * 2 + j
-      );
     }
 
     // count the sum of all reactions

@@ -6,7 +6,7 @@ import { Reaction } from "./ts/keywords";
 import { Chart } from "./ts/charts/chart";
 import { Chat } from "./ts/chats/chat";
 import { TwitchChat } from "./ts/chats/twitch.chat";
-import { ReactionStorage } from "./ts/reactionstorage";
+import { ReactionStorage, UpdateMode } from "./ts/reactionstorage";
 import { Pie } from "./ts/charts/pie";
 import { Bar } from "./ts/charts/bar";
 
@@ -46,14 +46,13 @@ const chart: Chart = buildChartFromParams();
 
 const storage: ReactionStorage = new ReactionStorage(chat, job);
 
-// ReactionStorage#on(reaction)
-// This event is executed when a new reaction is detected.
+// ReactionStorage#on(update)
+// This event is executed when a reaction count was incremented.
 // In this event the chart should be (re)painted with the values from:
 // ReactionStorage#getValues()
-storage.on("reaction", (username: string, reaction: Reaction) => {
-  console.log("on: reaction =", username, reaction, job.isActive());
-
-  if (job.isActive()) {
+storage.on("update", (reaction: Reaction, value: number, mode: UpdateMode) => {
+  console.log("on: update =", value, mode, job.isActive(), mode == UpdateMode.INCREMENT);
+  if (mode == UpdateMode.INCREMENT && job.isActive()) {
     storage.drawChart(chart);
   }
 });
