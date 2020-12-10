@@ -13,6 +13,9 @@ export class Job extends EventEmitter {
     super();
   }
 
+  /**
+   * This internal method is executed every second as long as the timer is running.
+   */
   private onTime(): void {
     this.current++;
     if (this.current >= this.timeout) {

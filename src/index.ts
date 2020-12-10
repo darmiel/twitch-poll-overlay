@@ -14,7 +14,10 @@ import { Bar } from "./ts/charts/bar";
 const params: URLSearchParams = new URLSearchParams(window.location.search);
 const channel: string = params.get("channel") ?? "";
 
-const job: Job = new Job(10, 5);
+const timeout: number = parseInt(params.get("timeout") ?? "10");
+const requiredPings: number = parseInt(params.get("requiredPings") ?? "5");
+
+const job: Job = new Job(timeout, requiredPings);
 const chat: Chat = new TwitchChat(channel);
 
 function buildChartFromParams(): Chart {
