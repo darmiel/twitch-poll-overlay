@@ -23,7 +23,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <style>
-        /*
+      /*
       body {
         background: #34495e;
       }
@@ -41,26 +41,32 @@
     <main role="main" class="container">
       <h1 class="mt-5">Poll Overlay Builder</h1>
       <p class="lead">
-        Here you can easily customize the overlay. <br>
-        When you're done, press the button at the bottom, and then use the output URL as the web browser URL in your stream program.
+        Here you can easily customize the overlay. <br />
+        When you're done, press the button at the bottom, and then use the
+        output URL as the web browser URL in your stream program.
       </p>
 
-      <hr>
+      <hr />
 
       <form id="form">
         <div class="form-group">
           <label for="channel">Channel:</label>
-          <input type="text" class="form-control" id="channel" name="channel" placeholder="d2aniel" required />
+          <input
+            type="text"
+            class="form-control"
+            id="channel"
+            name="channel"
+            placeholder="d2aniel"
+            required
+          />
           <small id="channelNotice" class="form-text text-muted"
             >Enter here the channel name only. Without
             <code>https://twitch.tv/</code></small
           >
         </div>
         <div class="form-group">
-            <br>
-            <p class="form-check-label">
-                Type:
-            </p>
+          <br />
+          <p class="form-check-label">Type:</p>
           <div class="form-check form-check-inline">
             <input
               class="form-check-input"
@@ -71,7 +77,7 @@
               checked
             />
             <label class="form-check-label" for="type_bar">
-              <img src="./assets/img/img_bar.png" alt="Bar">
+              <img src="./assets/img/img_bar.png" alt="Bar" />
             </label>
           </div>
           <div class="form-check form-check-inline">
@@ -83,59 +89,116 @@
               value="pie"
             />
             <label class="form-check-label" for="type_pie">
-                <img src="./assets/img/img_pie.png" alt="Pie">
+              <img src="./assets/img/img_pie.png" alt="Pie" />
             </label>
           </div>
         </div>
 
-        <hr>
+        <hr />
 
-        <h3>Advanced:</h2>
+        <h3>Advanced:</h3>
 
         <div class="form-group">
-            <label for="timeout">Timeout:</label>
-            <input type="number" class="form-control" id="timeout" name="timeout" value="10" />
-        </div>
-        
-        <div class="form-group">
-            <label for="requiredPings">Required Pings:</label>
-            <input type="number" class="form-control" id="requiredPings" name="requiredPings" value="3" />
+          <label for="timeout">Timeout:</label>
+          <input
+            type="number"
+            class="form-control"
+            id="timeout"
+            name="timeout"
+            value="10"
+          />
         </div>
 
-        <hr>
+        <div class="form-group">
+          <label for="requiredPings">Required Reactions:</label>
+          <input
+            type="number"
+            class="form-control"
+            id="requiredPings"
+            name="requiredPings"
+            value="3"
+          />
+        </div>
+
+        <small id="timeout_requiredpings_notice" class="form-text text-muted">
+          <ul>
+            <li>
+              The overlay will be <strong>shown</strong> if more than
+              <code class="sminf_reqp">{Required Pings}</code>
+              reactions were detected in
+              <code class="sminf_to">{Timeout}</code>
+              seconds
+            </li>
+            <li>
+              The overlay will be <strong>hidden</strong> if less than 
+              <code class="sminf_reqp">{Required Pings}</code>
+              responses were detected in 
+              <code class="sminf_to">{Timeout}</code>
+              seconds
+            </li>
+          </ul>
+         
+
+          <!-- Updater -->
+          <script>
+            const reqp = $("#requiredPings");
+            const to = $("#timeout");
+
+            function update() {
+              $(".sminf_reqp").each(function() {
+                $(this).html(reqp.val());
+              });
+              $(".sminf_to").each(function() {
+                $(this).html(to.val());
+              });
+            }
+
+            reqp.on("keydown", update).on("change", update);
+            to.on("keydown", update).on("change", update);
+          </script>
+        </small>
+
+        <hr />
 
         <button type="submit" class="btn btn-primary">🔨</button>
       </form>
 
-      <div id="output" style="display: none;">
-        <hr>
+      <div id="output" style="display: none">
+        <hr />
         <h2>Output:</h2>
-        <input type="text" class="form-control" id="output_txt" name="channel" placeholder="(( Error ))" readonly />
+        <input
+          type="text"
+          class="form-control"
+          id="output_txt"
+          name="channel"
+          placeholder="(( Error ))"
+          readonly
+        />
       </div>
 
       <script>
-          $("#form").on("submit", (event) => {
-            event.preventDefault();
+        $("#form").on("submit", (event) => {
+          event.preventDefault();
 
-            const data = $("#form").serialize();
+          const data = $("#form").serialize();
 
-            // Show output div
-            const outputElement = $("#output");
-            if (outputElement.css("display") == "none") {
-                console.log("Has display: none!");
-                outputElement.css("display", "unset");
-            }
+          // Show output div
+          const outputElement = $("#output");
+          if (outputElement.css("display") == "none") {
+            console.log("Has display: none!");
+            outputElement.css("display", "unset");
+          }
 
-            // Update output
-            const textElement = $("#output_txt");
+          // Update output
+          const textElement = $("#output_txt");
 
-            let url = window.location.href;
-            if (url.toLowerCase().endsWith("builder.html")) {
-                url = url.substring(0, url.length - 13);
-            }
+          let url = window.location.href;
+          if (url.toLowerCase().endsWith("builder.html")) {
+            url = url.substring(0, url.length - 13);
+          }
 
-            textElement.val(`${url}/?${data}`);
-          });
+          textElement.val(`${url}/?${data}`);
+        });
       </script>
     </main>
   </body>
