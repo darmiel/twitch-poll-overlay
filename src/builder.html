@@ -128,8 +128,13 @@
 
             // Update output
             const textElement = $("#output_txt");
-            const url = `${window.location.host}${window.location.pathname}?${data}`;
-            textElement.val(url.replace("builder.html", "index.html"));
+
+            let url = window.location.href;
+            if (url.toLowerCase().endsWith("builder.html")) {
+                url = url.substring(0, url.length - 13);
+            }
+
+            textElement.val(`${url}/?${data}`);
           });
       </script>
     </main>
