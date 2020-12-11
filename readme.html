@@ -1,0 +1,54 @@
+<h1 id="twitch-poll-overlayimg-align-right-width-200-height-200-src-https-i-imgur-com-v7tevus-png">Twitch Poll Overlay&lt;img align=&quot;right&quot; width=&quot;200&quot; height=&quot;200&quot; src=&quot;https://i.imgur.com/v7TevuS.png&quot;&gt;</h1>
+<p>This is a small project to evaluate those &quot;1&quot; and &quot;0&quot; polls in Twitch streams, and display them live in the stream.</p>
+<hr>
+<ul>
+<li><a href="#how-to-use">How to use</a><ul>
+<li><a href="#1-get-the-url-of-the-overlay">1. Get the URL of the overlay</a></li>
+<li><a href="#2-stream-software-setup">2. Stream-Software setup</a><ul>
+<li><a href="#a-create-a-browser-source">a) Create a browser source:</a></li>
+<li><a href="#b-paste-the-copied-url-at-url">b) Paste the copied URL at <code>URL</code></a></li>
+<li><a href="#c-adjust-width-and-height">c) Adjust Width and Height</a></li>
+<li><a href="#d-enter-at-custom-css">d) Enter at Custom CSS:</a></li>
+<li><a href="#done-finally-click-again-on-refresh-cache-of-current-active">Done! Finally click again on &quot;Refresh cache of current active&quot;.</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#types">Types</a><ul>
+<li><a href="#bar">Bar</a></li>
+<li><a href="#pie">Pie</a></li>
+</ul>
+</li>
+<li><a href="#why">Why?</a></li>
+</ul>
+<hr>
+<h2 id="how-to-use">How to use</h2>
+<p>The overlay can be used without further registration or installation.</p>
+<h3 id="1-get-the-url-of-the-overlay">1. Get the URL of the overlay</h3>
+<p>The overlay is currently hosted on GitHub Pages.<br>So the base URL currently is: <code>https://darmiel.github.io/twitch-poll-overlay/</code>.<br>The channel has to be specified as the parameter: <code>?channel=&lt;your channel name&gt;</code>:</p>
+<p>-&gt; <a href="http://darmiel.github.io/twitch-poll-overlay/index.html?channel=\">http://darmiel.github.io/twitch-poll-overlay/index.html?channel=\</a>&lt;your channel here\&gt;</p>
+<p>There are a few more optional parameters.<br>The easiest way is to use the<br><a href="http://darmiel.github.io/twitch-poll-overlay/builder.html">Parameter-Builder for twitch-poll-overlay</a></p>
+<h3 id="2-stream-software-setup">2. Stream-Software setup</h3>
+<p>In the following I will show the setup using <a href="https://obsproject.com">OBS</a>, but this should be possible with any other streaming program.</p>
+<h4 id="a-create-a-browser-source-">a) Create a browser source:</h4>
+<p><img src="assets/hiw-create-browser.png" alt="img"></p>
+<h4 id="b-paste-the-copied-url-at-url">b) Paste the copied URL at <code>URL</code></h4>
+<p><img src="assets/hiw-url-browser-source.png" alt="img"></p>
+<h4 id="c-adjust-width-and-height">c) Adjust Width and Height</h4>
+<p><strong>⚠️ Note</strong>: Please make sure that <strong>only here</strong> the size is adjusted.<br>If you resize the browser source afterwards with your mouse, problems <strong>will</strong> occur.</p>
+<h4 id="d-enter-at-custom-css-">d) Enter at Custom CSS:</h4>
+<pre><code class="lang-css">body { 
+    background-color: rgba(0, 0, 0, 0); 
+    margin: 0px auto; 
+    overflow: hidden; 
+}
+</code></pre>
+<h4 id="done-finally-click-again-on-refresh-cache-of-current-active-">Done! Finally click again on &quot;Refresh cache of current active&quot;.</h4>
+<p>Your Browser source should look something like this:<br><img src="assets/hiw-ov-browser-source.png" alt="img"></p>
+<h2 id="types">Types</h2>
+<h3 id="bar">Bar</h3>
+<p><img src="assets/demo-bar.gif" alt="demo-bar"></p>
+<h3 id="pie">Pie</h3>
+<p><img src="assets/demo-pie.gif" alt="demo-pie"></p>
+<h2 id="why-">Why?</h2>
+<p>I don&#39;t now.. I had this idea for a while now, and I just wanted to extend my TypeScript knowledge and experiment a bit with Webpack. Besides, it <strong>might</strong> be a little help for one or the other streamer / viewer 😁.</p>
