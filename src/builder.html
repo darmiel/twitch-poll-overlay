@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Builder</title>
+
+    <!-- Bootstrap 4 -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
+      crossorigin="anonymous"
+    />
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- JQuery 3 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <style>
+        /*
+      body {
+        background: #34495e;
+      }
+      */
+    </style>
+  </head>
+  <body>
+    <header>
+      <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">Builder</a>
+      </nav>
+    </header>
+
+    <!-- Begin page content -->
+    <main role="main" class="container">
+      <h1 class="mt-5">Poll Overlay Builder</h1>
+      <p class="lead">
+        Here you can easily customize the overlay. <br>
+        When you're done, press the button at the bottom, and then use the output URL as the web browser URL in your stream program.
+      </p>
+
+      <hr>
+
+      <form id="form">
+        <div class="form-group">
+          <label for="channel">Channel:</label>
+          <input type="text" class="form-control" id="channel" name="channel" placeholder="d2aniel" required />
+          <small id="channelNotice" class="form-text text-muted"
+            >Enter here the channel name only. Without
+            <code>https://twitch.tv/</code></small
+          >
+        </div>
+        <div class="form-group">
+            <br>
+            <p class="form-check-label">
+                Type:
+            </p>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="radio"
+              name="type"
+              id="type_bar"
+              value="bar"
+              checked
+            />
+            <label class="form-check-label" for="type_bar">
+              <img src="./assets/img/img_bar.png" alt="Bar">
+            </label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="radio"
+              name="type"
+              id="type_pie"
+              value="pie"
+            />
+            <label class="form-check-label" for="type_pie">
+                <img src="./assets/img/img_pie.png" alt="Pie">
+            </label>
+          </div>
+        </div>
+
+        <hr>
+
+        <h3>Advanced:</h2>
+
+        <div class="form-group">
+            <label for="timeout">Timeout:</label>
+            <input type="number" class="form-control" id="timeout" name="timeout" value="10" />
+        </div>
+        
+        <div class="form-group">
+            <label for="requiredPings">Required Pings:</label>
+            <input type="number" class="form-control" id="requiredPings" name="requiredPings" value="3" />
+        </div>
+
+        <hr>
+
+        <button type="submit" class="btn btn-primary">🔨</button>
+      </form>
+
+      <div id="output" style="display: none;">
+        <hr>
+        <h2>Output:</h2>
+        <input type="text" class="form-control" id="output_txt" name="channel" placeholder="(( Error ))" readonly />
+      </div>
+
+      <script>
+          $("#form").on("submit", (event) => {
+            event.preventDefault();
+
+            const data = $("#form").serialize();
+
+            // Show output div
+            const outputElement = $("#output");
+            if (outputElement.css("display") == "none") {
+                console.log("Has display: none!");
+                outputElement.css("display", "unset");
+            }
+
+            // Update output
+            const textElement = $("#output_txt");
+            const url = `${window.location.host}${window.location.pathname}?${data}`;
+            textElement.val(url.replace("builder.html", "index.html"));
+          });
+      </script>
+    </main>
+  </body>
+</html>

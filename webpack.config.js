@@ -21,6 +21,9 @@ module.exports = {
         use: [
           {
             loader: "file-loader",
+            options: {
+              publicPath: "./"
+            }
           },
         ],
       },
@@ -43,6 +46,11 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: "./src/index.html",
       filename: "index.html",
+    }),
+    new HtmlWebpackPlugin({
+      template: "./src/builder.html",
+      filename: "builder.html",
+      inject: false
     }),
     new MiniCssExtractPlugin(),
   ],

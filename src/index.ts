@@ -1,5 +1,8 @@
 /* R E S O U R C E S */
 import "./assets/styles/main.scss";
+import "./assets/img/img_bar.png";
+import "./assets/img/img_pie.png";
+import "./builder.html";
 
 import { Job } from "./ts/job";
 import { Reaction } from "./ts/keywords";
