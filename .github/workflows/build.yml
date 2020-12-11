@@ -21,7 +21,7 @@ jobs:
           # README
           npm install markdown-to-html --save-dev
           npx markdown README.md > dist/readme.html
-          copy -rf assets dist
+          cp -rf assets dist
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
