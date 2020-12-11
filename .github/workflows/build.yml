@@ -19,8 +19,8 @@ jobs:
           ls -larth
           ls -larth dist/
           # README
-          npm install markdown-to-html -g
-          markdown README.md > dist/readme.html
+          npm install markdown-to-html --save-dev
+          npx markdown README.md > dist/readme.html
           copy -rf assets dist
 
       - name: Deploy
