@@ -18,6 +18,10 @@ jobs:
           npx webpack
           ls -larth
           ls -larth dist/
+          # README
+          npm install markdown-to-html -g
+          markdown README.md > dist/readme.html
+          copy -rf assets dist
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
