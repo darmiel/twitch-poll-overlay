@@ -2,7 +2,7 @@ import { EventEmitter } from "events";
 import { Chart } from "./charts/chart";
 import { Chat } from "./chats/chat";
 import { Job } from "./job";
-import { getReactionByKeyword, Reaction, reactions } from "./keywords";
+import { getReaction, getReactionByKeyword, Reaction, reactions } from "./keywords";
 
 export enum UpdateMode {
   INCREMENT = 1,
@@ -45,7 +45,8 @@ export class ReactionStorage extends EventEmitter {
     }
 
     // get reactions from message
-    const reaction: Reaction = getReactionByKeyword(message);
+    const reaction: Reaction = getReaction(message, true);
+    console.log("Found Reaction:", reaction);
     // no reaction found
     if (reaction == null) {
       return;
