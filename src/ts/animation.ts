@@ -68,8 +68,6 @@ export class CanvasAnimation extends Animation {
 
       this.canvas.style.opacity = `${opacity}`;
 
-      console.log(`-> ${current}: ${opacity}%`);
-
       if (current >= durationInMs) {
         this.cancelInterval();
         this.emit("fadeEnd", durationInMs, smoothness, dir);

@@ -8,24 +8,24 @@ const reactions: Reaction[] = [
   {
     sorting: 0,
     display: "+1",
-    keywords: ["+1", "1", "yes", "ye", "ja"],
+    keywords: ["+1", "1", "yes", "ye", "ja", "sure", "yay"],
   },
   {
     sorting: 2,
     display: "~",
-    keywords: ["2", "wtf"],
+    keywords: ["2"],
   },
   {
     sorting: 3,
     display: "-1",
-    keywords: ["-1", "0", "no", "nein"],
+    keywords: ["-1", "0", "no", "nein", "nay"],
   },
 ];
 
 /**
- * This method checks if the message contains a keyword of a reaction and returns it if one was found. 
+ * This method checks if the message contains a keyword of a reaction and returns it if one was found.
  * Otherwise null
- * 
+ *
  * @param keyword Keyword to check
  */
 export function getReactionByKeyword(keyword: string): Reaction | null {
