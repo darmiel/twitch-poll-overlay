@@ -1,8 +1,38 @@
 const SIZE_FILL: number = -1;
 const LOCATION_CENTER: number = -2;
 
+export enum ChartType {
+  BAR = "bar",
+  PIE = "pie",
+}
+
+export interface FontProperties {
+  /**
+   *
+   * The font size of the font that serves as a percentage display above the chart.
+   * Use FONT_DYNAMIC to have the font size calculated according to the total size of the chart (dynamic)
+   * @default 25
+   */
+  fontSize?: number;
+  /**
+   * The font family for the values
+   * @default calibri
+   */
+  fontFamily?: string;
+  /**
+   * How much the text color should be darkened
+   * @default .65
+   */
+  fontColorFactor?: number;
+  /**
+   * The font in the calculation by the factor {fontSizeFactor}
+   * @default 1/8
+   */
+  fontSizeFactor?: number;
+}
+
 export interface ChartProperties {
-  elementId: string;
+  elementId?: string;
   x?: number;
   y?: number;
   width?: number;
@@ -23,7 +53,7 @@ export abstract class Chart {
   //
 
   constructor(properties: ChartProperties) {
-    this.canvasElementId = properties.elementId;
+    this.canvasElementId = properties.elementId ?? "canvas";
     this.x = properties.x ?? 0;
     this.y = properties.y ?? 0;
     this.width = properties.width ?? SIZE_FILL;
@@ -71,6 +101,8 @@ export abstract class Chart {
     if (!this.error) {
       this.init();
     }
+
+    console.log(properties);
   }
 
   abstract init(): void;

@@ -1,12 +1,12 @@
 import { colors, darkenHexColor } from "../color";
-import { Chart, ChartProperties } from "./chart";
+import { Chart, ChartProperties, FontProperties } from "./chart";
 
 const FONT_DYNAMIC: number = -1;
 export { FONT_DYNAMIC };
 
 ////////////////////////////////////////////////////////////////////////
 
-export interface BarProperties extends ChartProperties {
+export interface BarProperties extends ChartProperties, FontProperties {
   /**
    * The distance of the height (bottom and top) to the edge of the canvas
    * @default 0
@@ -51,31 +51,6 @@ export interface BarProperties extends ChartProperties {
    * How often should the contour be drawn? (Or also: the thickness of the stroke)
    */
   strokeIterations?: number;
-
-  /**
-   * The font size of the font that serves as a percentage display above the chart.
-   * Use FONT_DYNAMIC to have the font size calculated according to the total size of the chart (dynamic)
-   * @default FONT_DYNAMIC
-   */
-  fontSize?: number;
-
-  /**
-   * The font family for the values
-   * @default calibri
-   */
-  fontFamily?: string;
-
-  /**
-   * How much the text color should be darkened
-   * @default .65
-   */
-  fontColorFactor?: number;
-
-  /**
-   * The font in the calculation by the factor {fontSizeFactor}
-   * @default 1/8
-   */
-  fontSizeFactor?: number;
 
   /**
    * Round the value?

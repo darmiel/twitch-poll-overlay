@@ -1,4 +1,4 @@
-import { Chart, ChartProperties } from "./chart";
+import { Chart, ChartProperties, FontProperties } from "./chart";
 import { colors, darkenHexColor } from "../color";
 
 const LOCATION_CENTER: number = -1;
@@ -7,15 +7,7 @@ export { LOCATION_CENTER };
 
 ////////////////////////////////////////////////////////////////////////
 
-interface PieProperties extends ChartProperties {
-  /**
-   * 
-   * The font size of the font that serves as a percentage display above the chart.
-   * Use FONT_DYNAMIC to have the font size calculated according to the total size of the chart (dynamic)
-   * @default 25
-   */
-  fontSize?: number;
-
+export interface PieProperties extends ChartProperties, FontProperties {
   /**
    * Round the value?
    */
@@ -25,18 +17,6 @@ interface PieProperties extends ChartProperties {
    * (height or width) / {radiusFactor}
    */
   radiusFactor?: number;
-
-  /**
-   * The font family for the values
-   * @default calibri
-   */
-  fontFamily?: string;
-
-  /**
-   * How much the text color should be darkened
-   * @default .65
-   */
-  fontColorFactor?: number;
 }
 
 const defaultPieParams: PieProperties = {

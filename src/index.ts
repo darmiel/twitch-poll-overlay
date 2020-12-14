@@ -10,50 +10,16 @@ import { Chart } from "./ts/charts/chart";
 import { Chat } from "./ts/chats/chat";
 import { TwitchChat } from "./ts/chats/twitch.chat";
 import { ReactionStorage, UpdateMode } from "./ts/reactionstorage";
-import { Pie } from "./ts/charts/pie";
-import { Bar } from "./ts/charts/bar";
 import { CanvasAnimation, FadeDirection } from "./ts/animation";
+import { settings } from "./ts/param/params";
 
-// get channel from url
-const params: URLSearchParams = new URLSearchParams(window.location.search);
-const channel: string = params.get("channel") ?? "";
+console.log(settings);
 
-const timeout: number = parseInt(params.get("timeout") ?? "10");
-const requiredPings: number = parseInt(params.get("requiredPings") ?? "5");
-
-const job: Job = new Job(timeout, requiredPings);
-const chat: Chat = new TwitchChat(channel);
-
-function buildChartFromParams(): Chart {
-  const type = params.has("type") ? params.get("type") : null; // null = bar
-
-  // return bar
-  if (type == "pie") {
-    return new Pie({
-      elementId: "bar",
-      background: "none",
-      x: -1,
-      y: -1,
-      radiusFactor: 2,
-    });
-  } else {
-    return new Bar({
-      elementId: "bar",
-      // height: 50,
-      background: "none",
-      barMarginHeight: 0,
-      barMarginWidth: 0,
-      strokeMarginHeight: 0,
-      strokeMarginWidth: 0,
-    });
-  }
-}
-
-const chart: Chart = buildChartFromParams();
-
+const job: Job = new Job(settings.timeout, settings.requiredPings);
+const chat: Chat = new TwitchChat(settings.channel);
+const chart: Chart = settings.buildChart();
 const storage: ReactionStorage = new ReactionStorage(chat, job);
-
-const animation: CanvasAnimation = new CanvasAnimation("bar");
+const animation: CanvasAnimation = new CanvasAnimation(settings.elementId);
 
 // clear bar after faded out
 animation.on(
@@ -91,7 +57,7 @@ job.on("start", () => {
   storage.drawChart(chart);
 
   // fade in
-  animation.fade(500, 25, FadeDirection.IN);
+  animation.fade(settings.afid, settings.afis, FadeDirection.IN);
 });
 
 job.on("cancel", () => {
@@ -100,5 +66,5 @@ job.on("cancel", () => {
   // reset values
   storage.resetStorage();
 
-  animation.fade(500, 25, FadeDirection.OUT);
+  animation.fade(settings.afod, settings.afos, FadeDirection.OUT);
 });
