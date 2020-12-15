@@ -1,14 +1,7 @@
 import { Chart, ChartProperties, ChartType } from "../charts/chart";
 import { Bar, BarProperties } from "../charts/bar";
 import { Pie, PieProperties } from "../charts/pie";
-
-function required<T extends {new (...args: any[]): {} }>(
-    constructor: T
-) {
-    return class extends constructor {
-
-    }
-}
+import { reactions, updateReactions } from "../keywords";
 
 export class Settings implements ChartProperties, PieProperties, BarProperties {
   public channel: string = null;
@@ -52,6 +45,9 @@ export class Settings implements ChartProperties, PieProperties, BarProperties {
   public fontFamily: string;
   public fontColorFactor: number;
 
+  // reactions
+  public reactionsJson: string = "";
+
   constructor() {
     const params: URLSearchParams = new URLSearchParams(window.location.search);
 
@@ -89,5 +85,13 @@ export class Settings implements ChartProperties, PieProperties, BarProperties {
 }
 
 const settings: Settings = new Settings();
+
+// custom reactions
+if (settings.reactionsJson.trim().length > 0) {
+  const json: any = JSON.parse(settings.reactionsJson);
+  updateReactions(json);
+
+  console.log("Using custom reactions:", json, "=>", reactions);
+}
 
 export { settings };

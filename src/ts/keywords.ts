@@ -4,7 +4,7 @@ export interface Reaction {
   keywords: string[];
 }
 
-const reactions: Reaction[] = [
+let reactions: Reaction[] = [
   {
     sorting: 0,
     display: "+1",
@@ -22,6 +22,9 @@ const reactions: Reaction[] = [
   },
 ];
 
+export function updateReactions(r: Reaction[]) {
+  reactions = r;
+}
 
 export function getReaction(kwmsg: string, keywordOnly: boolean = false): Reaction | null {
   if (keywordOnly) {
