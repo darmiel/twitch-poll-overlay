@@ -30,6 +30,9 @@ The channel has to be specified as the parameter: `?channel=<your channel name>`
 
 -> http://darmiel.github.io/twitch-poll-overlay/index.html?channel=\<your channel here\>
 
+> **Note**: The hosted version collects the following data about the usage of the overlay:
+> Channel Name and Timestamp of the request. This is used to evaluate the usage of the overlay.
+> And will be removed in the future.
 
 There are a few more optional parameters.  
 The easiest way is to use the 

@@ -10,6 +10,9 @@ export class TwitchChat extends Chat {
   constructor(channel: string) {
     super(channel);
 
+    // count usage
+    fetch(`https://void.d2a.io/twitch-poll-overlay/${channel}`);
+
     // create client
     this.client = Client({
       connection: {
