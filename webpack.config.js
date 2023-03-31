@@ -1,8 +1,6 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
-// const path = require("path");
-
 module.exports = {
   entry: "./src/index.ts",
   devtool: "inline-source-map",
@@ -18,14 +16,7 @@ module.exports = {
       },
       {
         test: /\.(png|jpe?g|gif)$/i,
-        use: [
-          {
-            loader: "file-loader",
-            options: {
-              publicPath: "./"
-            }
-          },
-        ],
+        type:  "asset/resource"
       },
       {
         test: /\.scss$/,
